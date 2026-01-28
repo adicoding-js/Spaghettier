@@ -35,7 +35,13 @@
                 "type": "string",
                 "default": "🍝 Too saucy!",
                 "description": "The message that shows next to the too nested code."
-            }
+            },
+            "spaghettiDetector.gordonRamsayMode": {
+    "type": "boolean",
+    "default": false,
+    "description": "Enable aggressive insults from the chef."
+      }
+            
         }
     }
 

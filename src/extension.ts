@@ -1,8 +1,21 @@
-// This Code is well formatted for easy reading and understanding, HAVE FUN!!! 💖
-
 import * as vscode from 'vscode';
 export function activate(context: vscode.ExtensionContext) {
     console.log('🍝 Spaghetti Detector is now active!');
+
+    // # NEW feature: Gordon Ramsay Insults
+    const ramsayInsults = [
+        "IT'S RAW!",
+        "My grandma codes better than this!",
+        "What are you doing??",
+        "It's dry! ",
+        "Absolute trash!",
+        "Get out of the kitchen!",
+        "This code is a disaster!",
+        "Where is the cleanliness!?",
+        "You don't know how to code!",
+        "This is a nightmare!",
+        "You call this programming?",         
+    ];
 
     // 1) This Creates the visual decoration for "spaghetti" lines
     const spaghettiDecorationType = vscode.window.createTextEditorDecorationType({
@@ -15,7 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     let activeEditor = vscode.window.activeTextEditor;
- // New decoration version with user settings
+    // New decoration version with user settings
 
     function updateDecorations() {
         if (!activeEditor) { return; }
@@ -24,15 +37,26 @@ export function activate(context: vscode.ExtensionContext) {
         const spaghettiLines: vscode.DecorationOptions[] = [];
         const lines = text.split(/\r\n|\r|\n/);
 
-     // 1) This Retrives the User preferred settings
+        // 1) This Retrives the User preferred settings
         const config = vscode.workspace.getConfiguration('spaghettiDetector');
         const maxDepth = config.get<number>('maxDepth') || 16;
-        const customMessage = config.get<string>('message') || '🍝 Too saucy!';
+        
+        // [MODIFIED] Changed 'const' to 'let' so we can change it in Ramsay mode
+        let customMessage = config.get<string>('message') || '🍝 Too saucy!';
+        
+        // [NEW] Check if Gordon Ramsay Mode is enabled
+        const isRamsayMode = config.get<boolean>('gordonRamsayMode');
 
-    // 2) This Updates the decoration style to use the custom message
-    // Note: We have recreate the decoration type if we want dynamic text
-    // But for a simple version, we can just attach the message to the specific line.
-      for (let i = 0; i < lines.length; i++) {
+        // [NEW] If Ramsay mode is on, pick a random insult
+        if (isRamsayMode) {
+            const randomInsult = ramsayInsults[Math.floor(Math.random() * ramsayInsults.length)];
+            customMessage = ` 🤬 ${randomInsult}`;
+        }
+
+        // 2) This Updates the decoration style to use the custom message
+        // Note: We have recreate the decoration type if we want dynamic text
+        // But for a simple version, we can just attach the message to the specific line.
+        for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
             const indentation = line.search(/\S/);
 
@@ -40,11 +64,14 @@ export function activate(context: vscode.ExtensionContext) {
             if (indentation > maxDepth) { 
                 const startPos = new vscode.Position(i, 0);
                 const endPos = new vscode.Position(i, line.length);
+                
                 spaghettiLines.push({ 
                     range: new vscode.Range(startPos, endPos),
                     renderOptions: {
                         after: {
-                            contentText: ` ${customMessage}`,  //Uses the User's custom message!
+                            contentText: ` ${customMessage}`,  //Uses the User's custom message (or Insult)!
+                            // [Optional] Make it redder if Ramsay is yelling
+                            color: isRamsayMode ? 'red' : 'orange' 
                         }
                     }
                 });
@@ -71,7 +98,7 @@ export function activate(context: vscode.ExtensionContext) {
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
 
-                   // CORE LOGIC for Identifying "spaghetti" lines
+                    // CORE LOGIC for Identifying "spaghetti" lines
             // Checks for indentation (4 spaces = 1 tab usually)
             // If line has more than 16 spaces (4 levels deep), This marks it
             const indentation = line.search(/\S/); 
