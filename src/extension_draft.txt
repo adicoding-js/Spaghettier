@@ -1,0 +1,61 @@
+// This was the first draft of the Spaghetti Detector extension, and this helps anyone reading this code understsand this extension better, as this code has more detailed comments.
+// However, the code in extension.ts is the refined version that is actually used in the extension.
+// This code dosen't work as intended but it explains the logic better.
+import * as vscode from 'vscode';
+export function activate(context: vscode.ExtensionContext) {
+	
+  	// 1. Create a simple "decoration type" (Visual style)
+	const spaghettiDecorationType = vscode.window.createTextEditorDecorationType({
+		backgroundColor: 'rgba(255,0,0,0.3)', 
+		gutterIconPath: context.asAbsolutePath('images/spaghetti-icon.png'),
+		gutterIconSize: 'contain',
+		after: {
+			contentText: 'Code getting too saucy!!🍝  ',
+			color: 'orange',
+			fontStyle: 'italic'}
+		 });
+
+	let activeEditor = vscode.window.activeTextEditor;	
+	function updateDecorations() {
+		if (!activeEditor) { return;}
+
+		const text = activeEditor.document.getText();
+		const spaghettiLines: vscode.DecorationOptions[] = [];
+
+		// This Code Split Text into lines
+		const lines = text.split('/\r\n|\r\n/');
+
+		// Scans for the nested/jumbled code
+		for (let i = 0; i < lines.length; i++) {
+			const line = lines[i];
+			
+	    // Saucy Logic: If a line starts with 16 or more spaces or 4+ tabs, it's considered Saucy!
+		// Anyone can modify this regex to make it what you consider "too saucy/nested"
+			const indentation = line.search(/\S/);
+			if (indentation > 20) {
+				const startPos = new vscode.Position(i, 0);
+				const endPos = new vscode.Position(i, line.length);
+				const decoration = { range: new vscode.Range(startPos, endPos) };
+				spaghettiLines.push(decoration);
+			}
+		}
+		
+		// This Applies the decorations.
+		activeEditor.setDecorations(spaghettiDecorationType, spaghettiLines);}
+
+		// This Runs it on load
+		if (activeEditor) {{ updateDecorations(); }}
+
+		// This Updates it when the user types or switches files!
+		vscode.window.onDidChangeActiveTextEditor(editor => {
+			activeEditor = editor;
+			if (editor) { updateDecorations(); }
+		}, null, context.subscriptions);
+
+		vscode.workspace.onDidChangeTextDocument(event => {
+			if (activeEditor && event.document === activeEditor.document) {
+				updateDecorations();
+			}
+		}, null, context.subscriptions);
+	}
+	

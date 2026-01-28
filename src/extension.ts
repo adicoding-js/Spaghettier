@@ -26,7 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
 
                    // CORE LOGIC for Identifying "spaghetti" lines
             // Checks for indentation (4 spaces = 1 tab usually)
-            // If line has more than 16 spaces (4 levels deep), mark it
+            // If line has more than 16 spaces (4 levels deep), This marks it
             const indentation = line.search(/\S/); 
             
             if (indentation > 16) { 
