@@ -1,5 +1,8 @@
 # Spaghettier - Spaghetti-detector
 
+##**THIS EXTENSION IS LIVE ON VS CODE EXTENSION MARKETPLACE**
+##**Extension Name : Spaghettier by adicoding-js**
+
 **"Is your code pasta? Or is it perfection?"**
 
 Spaghettier is a VS Code extension that saves you from writing messy, deeply nested code (aka "Spaghetti Code"). It screams at you (sometimes literally) when your indentation gets too deep.
@@ -14,9 +17,10 @@ Turn this on in settings if you need extra motivation. instead of a polite warni
 * *"My grandma codes better than this!"*
 * *"Absolute trash!"*
 
-## Requirements
-
- Still in development😀
+## 🛠️ Installation
+You can Either install it directly through the **VS Code Extension Marketplace by searching "Spaghettier" by adicoding-js**
+                                               **OR**
+You can install the .vsix file from the releases, then go to **Extensions > ... (three dots on top left of the side panel) > Install from .vsix > select your .vsix file**
 
 ## ⚙️ Extension Settings
 
