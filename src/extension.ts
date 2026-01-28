@@ -1,9 +1,8 @@
 import * as vscode from 'vscode';
-
 export function activate(context: vscode.ExtensionContext) {
     console.log('🍝 Spaghetti Detector is now active!');
 
-    // 1. Create the visual decoration type
+    // 1) This Creates the visual decoration for "spaghetti" lines
     const spaghettiDecorationType = vscode.window.createTextEditorDecorationType({
         backgroundColor: 'rgba(255, 0, 0, 0.3)', 
         after: {
@@ -24,7 +23,9 @@ export function activate(context: vscode.ExtensionContext) {
 
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
-            // Check for indentation (4 spaces = 1 tab usually)
+
+                   // CORE LOGIC for Identifying "spaghetti" lines
+            // Checks for indentation (4 spaces = 1 tab usually)
             // If line has more than 16 spaces (4 levels deep), mark it
             const indentation = line.search(/\S/); 
             
@@ -38,7 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
         activeEditor.setDecorations(spaghettiDecorationType, spaghettiLines);
     }
 
-    // Trigger updates
+    // This Triggers updates
     if (activeEditor) { updateDecorations(); }
 
     vscode.window.onDidChangeActiveTextEditor(editor => {
