@@ -1,4 +1,4 @@
-d# spaghettier-detector README
+# Spaghettier - Spaghetti-detector
 
 This is the README for THE extension "spaghettier".
 A Simple VS code extension that warns the user when his code gets too saucy!! (saucy = nested/looped )
