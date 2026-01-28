@@ -1,3 +1,5 @@
+// This Code is well formatted for easy reading and understanding, HAVE FUN!!! 💖
+
 import * as vscode from 'vscode';
 export function activate(context: vscode.ExtensionContext) {
     console.log('🍝 Spaghetti Detector is now active!');
