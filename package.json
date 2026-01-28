@@ -13,14 +13,33 @@
     "onStartupFinished"
   ],
   "main": "./dist/extension.js",
+
+
+  
   "contributes": {
     "commands": [
-      {
-        "command": "spaghettier-detector.helloWorld",
-        "title": "Hello World"
-      }
-    ]
-  },
+        {
+            "command": "spaghetti-detector.helloworld",
+            "title": "Hello World"
+        }
+    ],
+    "configuration": {
+        "title": "Spaghettier",
+        "properties": {
+            "spaghettiDetector.maxDepth": {
+                "type": "number",
+                "default": 16,
+                "description": "How many spaces deep before you consider the code 'Too saucy'?"
+            },
+            "spaghettiDetector.message": {
+                "type": "string",
+                "default": "🍝 Too saucy!",
+                "description": "The message that shows next to the too nested code."
+            }
+        }
+    }
+
+},
   "scripts": {
     "vscode:prepublish": "npm run package",
     "compile": "webpack",
